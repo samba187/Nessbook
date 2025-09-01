@@ -1,0 +1,275 @@
+/* Styles pour les pages de livre */
+.page-container {
+  padding: 20px;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.page-header {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  margin-bottom: 30px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.back-button {
+  width: 40px;
+  height: 40px;
+  border: none;
+  background-color: #F0F0F0;
+  border-radius: 50%;
+  font-size: 20px;
+  cursor: pointer;
+  transition: all 0.3s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.back-button:hover {
+  background-color: #E0E0E0;
+  transform: scale(1.1);
+}
+
+.page-header h1 {
+  font-size: 24px;
+  color: var(--text-primary);
+  flex: 1;
+}
+
+/* Book Form */
+.book-form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  background: white;
+  padding: 25px;
+  border-radius: 15px;
+  box-shadow: var(--shadow);
+}
+
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+
+.rating-input {
+  display: flex;
+  gap: 5px;
+  font-size: 28px;
+}
+
+.star {
+  cursor: pointer;
+  color: #D0D0D0;
+  transition: color 0.2s;
+  user-select: none;
+}
+
+.star.filled {
+  color: #FFB400;
+}
+
+.star:hover {
+  color: #FFB400;
+}
+
+textarea.form-input {
+  resize: vertical;
+  min-height: 100px;
+  font-family: inherit;
+}
+
+/* Book Details */
+.book-details-container {
+  padding: 20px;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.book-details {
+  background: white;
+  border-radius: 15px;
+  padding: 25px;
+  box-shadow: var(--shadow);
+}
+
+.book-cover-large {
+  width: 200px;
+  aspect-ratio: 3/4;
+  margin: 0 auto 30px;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: var(--shadow);
+}
+
+.book-cover-large img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.book-info-details {
+  text-align: center;
+}
+
+.book-info-details h2 {
+  font-size: 26px;
+  margin-bottom: 10px;
+  color: var(--text-primary);
+}
+
+.author-name {
+  font-size: 18px;
+  color: var(--text-secondary);
+  margin-bottom: 20px;
+}
+
+.book-metadata {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+.genre-tag, .year-tag {
+  background-color: #F0F0F0;
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.genre-tag {
+  background-color: #E8F0FF;
+  color: var(--primary-color);
+}
+
+.rating-display {
+  font-size: 24px;
+  color: #FFB400;
+  margin-bottom: 30px;
+}
+
+.book-section {
+  text-align: left;
+  margin-bottom: 25px;
+}
+
+.book-section h3 {
+  font-size: 18px;
+  margin-bottom: 10px;
+  color: var(--text-primary);
+}
+
+.book-section p {
+  color: var(--text-secondary);
+  line-height: 1.8;
+  white-space: pre-wrap;
+}
+
+.action-buttons {
+  display: flex;
+  gap: 15px;
+  margin-top: 30px;
+  justify-content: center;
+}
+
+/* Modal */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 20px;
+  animation: fadeIn 0.3s ease-out;
+}
+
+.modal {
+  background: white;
+  border-radius: 15px;
+  padding: 30px;
+  max-width: 400px;
+  width: 100%;
+  box-shadow: var(--shadow-lg);
+  animation: slideUp 0.3s ease-out;
+}
+
+.modal h3 {
+  font-size: 20px;
+  margin-bottom: 15px;
+  color: var(--text-primary);
+}
+
+.modal p {
+  color: var(--text-secondary);
+  margin-bottom: 25px;
+}
+
+.modal-buttons {
+  display: flex;
+  gap: 15px;
+  justify-content: flex-end;
+}
+
+/* Animations */
+@keyframes slideUp {
+  from {
+    transform: translateY(50px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+/* Responsive adjustments */
+@media (min-width: 768px) {
+  .book-details {
+    display: grid;
+    grid-template-columns: 300px 1fr;
+    gap: 40px;
+    align-items: start;
+  }
+
+  .book-cover-large {
+    width: 100%;
+    margin: 0;
+  }
+
+  .book-info-details {
+    text-align: left;
+  }
+
+  .book-metadata {
+    justify-content: flex-start;
+  }
+
+  .action-buttons {
+    justify-content: flex-start;
+  }
+}
+
+@media (max-width: 480px) {
+  .form-row {
+    grid-template-columns: 1fr;
+  }
+  
+  .book-form {
+    padding: 20px;
+  }
+  
+  .page-container {
+    padding: 15px;
+  }
+}
