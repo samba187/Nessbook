@@ -41,10 +41,9 @@ const AppRoutes = () => {
       <Route path="/add-book" element={<PrivateRoute><AddBookPage /></PrivateRoute>} />
       <Route path="/edit-book/:id" element={<PrivateRoute><EditBookPage /></PrivateRoute>} />
       <Route path="/book/:id" element={<PrivateRoute><BookDetailsPage /></PrivateRoute>} />
-  {/* Defensive redirect for accidental /book/undefined */}
-  <Route path="/book/undefined" element={<Navigate to="/dashboard" replace />} />
+      <Route path="/book/undefined" element={<Navigate to="/dashboard" replace />} />
       <Route path="/profile" element={<PrivateRoute><ProfilePage /></PrivateRoute>} />
-      {/* Catch all route */}
+      {/* Catch all route - redirect to dashboard if authenticated, else home */}
       <Route path="*" element={
         <Navigate to={isAuthenticated ? "/dashboard" : "/"} replace />
       } />

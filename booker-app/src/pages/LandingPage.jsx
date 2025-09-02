@@ -35,16 +35,15 @@ const LandingPage = () => {
           <div className="hero-section">
             <div className="hero-content">
               <h1 className="hero-title">
-                Gérez votre bibliothèque
-                <span className="highlight"> avec passion</span>
+                NessBook
+                <span className="highlight"> - Ma bibliothèque</span>
               </h1>
               <p className="hero-description">
-                Organisez, notez et découvrez vos livres préférés. 
-                NessBook vous aide à créer votre bibliothèque personnelle parfaite.
+                Organisez vos livres, gardez vos notes et citations.
               </p>
               <div className="hero-actions">
                 <Link to="/register" className="btn btn-primary btn-large">
-                  <span>Commencer gratuitement</span>
+                  <span>Créer un compte</span>
                   <span className="btn-arrow">→</span>
                 </Link>
                 <Link to="/login" className="btn btn-secondary btn-large">
@@ -78,52 +77,34 @@ const LandingPage = () => {
           </div>
 
           <div className="features-section">
-            <h2 className="features-title">Pourquoi choisir NessBook ?</h2>
+            <h2 className="features-title">Fonctionnalités</h2>
             <div className="features-grid">
               <div className="feature-card">
                 <div className="feature-icon">📚</div>
-                <h3>Organisation intelligente</h3>
-                <p>Classez vos livres par genre, auteur ou note pour retrouver facilement vos favoris.</p>
+                <h3>Organisation simple</h3>
+                <p>Classez vos livres par genre, auteur ou note.</p>
               </div>
               
               <div className="feature-card">
                 <div className="feature-icon">⭐</div>
-                <h3>Notes & commentaires</h3>
-                <p>Notez vos lectures et ajoutez vos commentaires personnels pour vous en souvenir.</p>
-              </div>
-              
-              <div className="feature-card">
-                <div className="feature-icon">📊</div>
-                <h3>Statistiques détaillées</h3>
-                <p>Suivez vos habitudes de lecture avec des statistiques visuelles et motivantes.</p>
+                <h3>Notes & citations</h3>
+                <p>Gardez vos commentaires et citations préférées.</p>
               </div>
               
               <div className="feature-card">
                 <div className="feature-icon">📱</div>
                 <h3>Accessible partout</h3>
-                <p>Accédez à votre bibliothèque depuis tous vos appareils, où que vous soyez.</p>
-              </div>
-              
-              <div className="feature-card">
-                <div className="feature-icon">🎯</div>
-                <h3>Objectifs de lecture</h3>
-                <p>Définissez et atteignez vos objectifs de lecture annuels avec motivation.</p>
-              </div>
-              
-              <div className="feature-card">
-                <div className="feature-icon">🔒</div>
-                <h3>Sécurisé & privé</h3>
-                <p>Vos données sont protégées et votre bibliothèque reste entièrement privée.</p>
+                <p>Sur tous vos appareils.</p>
               </div>
             </div>
           </div>
 
           <div className="cta-section">
             <div className="cta-content">
-              <h2>Prêt à organiser votre bibliothèque ?</h2>
-              <p>Rejoignez des milliers de lecteurs qui utilisent déjà NessBook</p>
+              <h2>Commencer maintenant</h2>
+              <p>Créez votre compte</p>
               <Link to="/register" className="btn btn-primary btn-large">
-                <span>Créer mon compte gratuit</span>
+                <span>S'inscrire</span>
                 <span className="btn-arrow">→</span>
               </Link>
             </div>
@@ -136,7 +117,7 @@ const LandingPage = () => {
               <span className="footer-logo-icon">📚</span>
               <span className="footer-logo-text">NessBook</span>
             </div>
-            <p>&copy; 2024 NessBook. Fait avec ❤️ pour les amoureux des livres.</p>
+            <p>&copy; 2024 NessBook.</p>
           </div>
         </footer>
       </div>

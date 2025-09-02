@@ -147,18 +147,18 @@ const LoginPage = () => {
           </div>
           <div className="feature-item">
             <div className="feature-icon">📖</div>
-            <h3>Gérez votre bibliothèque</h3>
-            <p>Organisez et suivez tous vos livres préférés</p>
+            <h3>Ma bibliothèque</h3>
+            <p>Organisez vos livres</p>
           </div>
           <div className="feature-item">
             <div className="feature-icon">⭐</div>
-            <h3>Notez et commentez</h3>
-            <p>Partagez vos avis et découvrez de nouveaux livres</p>
+            <h3>Notes et citations</h3>
+            <p>Gardez vos commentaires</p>
           </div>
           <div className="feature-item">
-            <div className="feature-icon">🎯</div>
-            <h3>Objectifs de lecture</h3>
-            <p>Définissez et atteignez vos objectifs de lecture</p>
+            <div className="feature-icon">📱</div>
+            <h3>Partout</h3>
+            <p>Sur tous vos appareils</p>
           </div>
         </div>
       </div>

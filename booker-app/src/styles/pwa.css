@@ -1,0 +1,26 @@
+/* PWA Install Button Animation */
+@keyframes slideInUp {
+  from {
+    transform: translateY(100px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+/* Better mobile spacing for install button */
+@media (max-width: 768px) {
+  .install-pwa-button {
+    bottom: 90px !important;
+    right: 15px !important;
+    font-size: 13px !important;
+    padding: 10px 16px !important;
+  }
+}
+
+/* Ensure PWA button doesn't interfere with mobile nav */
+.install-pwa-button {
+  z-index: 1001 !important;
+}

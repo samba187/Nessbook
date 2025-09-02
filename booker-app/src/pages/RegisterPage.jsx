@@ -96,18 +96,18 @@ const RegisterPage = () => {
         <div className="auth-features">
           <div className="feature-item">
             <div className="feature-icon">🚀</div>
-            <h3>Commencez votre voyage</h3>
-            <p>Créez votre compte et commencez à organiser votre bibliothèque personnelle</p>
+            <h3>Commencez</h3>
+            <p>Créez votre compte et organisez votre bibliothèque</p>
           </div>
           <div className="feature-item">
             <div className="feature-icon">🔒</div>
-            <h3>Sécurisé et privé</h3>
-            <p>Vos données sont protégées et votre bibliothèque reste privée</p>
+            <h3>Sécurisé</h3>
+            <p>Vos données sont protégées</p>
           </div>
           <div className="feature-item">
             <div className="feature-icon">📱</div>
-            <h3>Accessible partout</h3>
-            <p>Accédez à vos livres depuis n'importe quel appareil</p>
+            <h3>Mobile</h3>
+            <p>Accès depuis n'importe où</p>
           </div>
         </div>
 

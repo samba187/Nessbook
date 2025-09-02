@@ -31,13 +31,24 @@ const InstallPWA = () => {
   if (!visible || isIos || isStandalone) return null;
 
   return (
-    <div style={{ position: 'fixed', bottom: 20, right: 20, zIndex: 1000 }}>
+    <div className="install-pwa-button" style={{ 
+      position: 'fixed', 
+      bottom: 80, 
+      right: 20, 
+      zIndex: 1000,
+      animation: 'slideInUp 0.3s ease-out'
+    }}>
       <button
         onClick={onInstall}
-        className="btn btn-secondary"
-        style={{ boxShadow: '0 6px 20px rgba(0,0,0,0.15)' }}
+        className="btn btn-primary"
+        style={{ 
+          boxShadow: '0 6px 20px rgba(0,0,0,0.25)',
+          padding: '12px 20px',
+          fontSize: '14px',
+          fontWeight: '600'
+        }}
       >
-        Installer l'application
+        📱 Installer l'app
       </button>
     </div>
   );
