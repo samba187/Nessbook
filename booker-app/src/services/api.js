@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 // Configuration de base via variable d'environnement Vite
-const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
+const API_URL = import.meta.env.VITE_API_URL || 'https://nessbook-ec6ae08c0bcf.herokuapp.com';
 
 const api = axios.create({
   baseURL: API_URL,
