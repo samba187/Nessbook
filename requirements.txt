@@ -1,5 +1,5 @@
 flask
-fask-cors
+flask-cors
 flask-bcrypt
 flask-jwt-extended
 pymongo
