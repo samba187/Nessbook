@@ -3,6 +3,6 @@
   "private": true,
   "engines": { "node": "20.x" },
   "scripts": {
-    "heroku-postbuild": "npm --prefix booker-app ci && npm --prefix booker-app run build"
+    "heroku-postbuild": "npm --prefix booker-app install --include=dev && npm --prefix booker-app run build"
   }
 }
