@@ -1,33 +1,37 @@
-import axios from 'axios';
+import axios from "axios";
 
-// Configuration de base via variable d'environnement Vite
-const API_URL = import.meta.env.VITE_API_URL || 'https://nessbook-ec6ae08c0bcf.herokuapp.com';
+// URL racine de l’API :
+// - en dev: http://localhost:5000  (via .env.development)
+// - en prod: même domaine Heroku où l’app est servie (via .env.production vide)
+// On enlève le / final s'il existe
+const ROOT = (import.meta.env.VITE_API_URL || "").replace(/\/$/, "");
 
+// IMPORTANT: on ajoute automatiquement le préfixe /api ici
 const api = axios.create({
-  baseURL: API_URL,
+  baseURL: `${ROOT}/api`,
 });
 
-// Intercepteur pour ajouter le token aux requêtes
-api.interceptors.request.use(
-  (config) => {
-    const token = localStorage.getItem('access_token');
-    if (token) {
-      config.headers.Authorization = `Bearer ${token}`;
-    }
-    return config;
-  },
-  (error) => Promise.reject(error)
-);
+// Ajout du token JWT si présent
+api.interceptors.request.use((config) => {
+  const token = localStorage.getItem("access_token");
+  if (token) {
+    config.headers = config.headers ?? {};
+    (config.headers as any).Authorization = `Bearer ${token}`;
+  }
+  return config;
+});
 
-// Intercepteur pour gérer les erreurs 401
+// Gestion 401: on nettoie et on renvoie vers /login
 api.interceptors.response.use(
-  (response) => response,
-  (error) => {
-    if (error.response?.status === 401) {
-      localStorage.removeItem('access_token');
-      window.location.href = '/login';
+  (res) => res,
+  (err) => {
+    if (err?.response?.status === 401) {
+      localStorage.removeItem("access_token");
+      if (window.location.pathname !== "/login") {
+        window.location.href = "/login";
+      }
     }
-    return Promise.reject(error);
+    return Promise.reject(err);
   }
 );
 
