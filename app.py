@@ -165,7 +165,9 @@ def update_user_profile():
     result = users_collection.update_one({'email': current_user}, {'$set': data})
     if result.matched_count == 0:
         return jsonify({'error': 'User not found'}), 404
-    return jsonify({'message': 'Profile updated successfully'})
+    # Return the updated user (without sensitive fields) so client can persist
+    updated_user = users_collection.find_one({'email': current_user}, {'password': 0, '_id': 0})
+    return jsonify({'message': 'Profile updated successfully', 'user': updated_user})
 
 @app.route('/api/addbook', methods=['POST'])
 @jwt_required()

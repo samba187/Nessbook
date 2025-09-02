@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import api from '../services/api';
 
 const AuthContext = createContext();
 
@@ -9,32 +10,58 @@ export const AuthProvider = ({ children }) => {
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
 
-  // Load user data from localStorage on init
+  // Load user profile from API if token exists; fallback to localStorage
   useEffect(() => {
-    const token = localStorage.getItem('access_token');
-    const userData = localStorage.getItem('user_data');
-    
-    if (token && userData) {
-      try {
-        setUser(JSON.parse(userData));
-        setIsAuthenticated(true);
-      } catch (error) {
-        console.error('Error parsing user data:', error);
-        logout();
+    const bootstrap = async () => {
+      const token = localStorage.getItem('access_token');
+      const localUser = localStorage.getItem('user_data');
+      if (!token) {
+        setLoading(false);
+        return;
       }
-    }
-    setLoading(false);
+      try {
+        const res = await api.get('/user/profile');
+        if (res && res.data) {
+          setUser(res.data);
+          localStorage.setItem('user_data', JSON.stringify(res.data));
+          setIsAuthenticated(true);
+          setLoading(false);
+          return;
+        }
+      } catch (e) {
+        // Fallback to local storage if available
+        if (localUser) {
+          try {
+            setUser(JSON.parse(localUser));
+            setIsAuthenticated(true);
+          } catch {
+            // ignore
+          }
+        }
+      }
+      setLoading(false);
+    };
+    bootstrap();
   }, []);
 
-  const login = (token, userData = null) => {
+  const login = async (token, fallbackUserData = null) => {
     localStorage.setItem('access_token', token);
     setIsAuthenticated(true);
-    
-    if (userData) {
-      localStorage.setItem('user_data', JSON.stringify(userData));
-      setUser(userData);
+    try {
+      const res = await api.get('/user/profile');
+      if (res && res.data) {
+        localStorage.setItem('user_data', JSON.stringify(res.data));
+        setUser(res.data);
+      } else if (fallbackUserData) {
+        localStorage.setItem('user_data', JSON.stringify(fallbackUserData));
+        setUser(fallbackUserData);
+      }
+    } catch {
+      if (fallbackUserData) {
+        localStorage.setItem('user_data', JSON.stringify(fallbackUserData));
+        setUser(fallbackUserData);
+      }
     }
-    
     navigate('/dashboard');
   };
 
@@ -46,10 +73,21 @@ export const AuthProvider = ({ children }) => {
     navigate('/login');
   };
 
-  const updateUserProfile = (updatedData) => {
-    const newUserData = { ...user, ...updatedData };
-    setUser(newUserData);
-    localStorage.setItem('user_data', JSON.stringify(newUserData));
+  const updateUserProfile = async (updatedData) => {
+    // Persist to backend and update local state
+    try {
+      const res = await api.put('/user/profile', updatedData);
+      const updatedUser = res?.data?.user ? res.data.user : { ...user, ...updatedData };
+      setUser(updatedUser);
+      localStorage.setItem('user_data', JSON.stringify(updatedUser));
+      return { success: true };
+    } catch (e) {
+      // Still update local to keep UI responsive
+      const newUserData = { ...user, ...updatedData };
+      setUser(newUserData);
+      localStorage.setItem('user_data', JSON.stringify(newUserData));
+      return { success: false, error: e };
+    }
   };
 
   const value = {

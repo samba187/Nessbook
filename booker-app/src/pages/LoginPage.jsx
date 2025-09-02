@@ -142,6 +142,9 @@ const LoginPage = () => {
         </div>
 
         <div className="auth-features">
+          <div style={{ marginBottom: '16px' }}>
+            <Link to="/" className="auth-link">← Accueil</Link>
+          </div>
           <div className="feature-item">
             <div className="feature-icon">📖</div>
             <h3>Gérez votre bibliothèque</h3>

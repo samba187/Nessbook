@@ -5,6 +5,7 @@ import './ProfilePage.css';
 
 const ProfilePage = () => {
   const { user, updateUserProfile, logout } = useAuth();
+  const [saveState, setSaveState] = useState('idle');
   const [stats, setStats] = useState({ total: 0, genres: {}, avgRating: 0 });
   const [loading, setLoading] = useState(true);
   const [editMode, setEditMode] = useState(false);
@@ -52,9 +53,12 @@ const ProfilePage = () => {
     }
   };
 
-  const handleSaveProfile = () => {
-    updateUserProfile(profileData);
+  const handleSaveProfile = async () => {
+    setSaveState('saving');
+    await updateUserProfile(profileData);
+    setSaveState('saved');
     setEditMode(false);
+    setTimeout(() => setSaveState('idle'), 1500);
   };
 
   const handlePhotoUpload = (e) => {
@@ -186,8 +190,8 @@ const ProfilePage = () => {
                   rows="3"
                 />
                 <div className="profile-edit-buttons">
-                  <button className="btn btn-primary" onClick={handleSaveProfile}>
-                    Sauvegarder
+                  <button className="btn btn-primary" onClick={handleSaveProfile} disabled={saveState==='saving'}>
+                    {saveState==='saving' ? 'Sauvegarde...' : 'Sauvegarder'}
                   </button>
                   <button 
                     className="btn btn-secondary" 

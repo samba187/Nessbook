@@ -2,6 +2,7 @@ import React from 'react';
 import { useAuth } from '../contexts/AuthContext';
 import Header from './Header';
 import MobileNav from './MobileNav';
+import InstallPWA from './InstallPWA';
 
 const MainLayout = ({ children }) => {
   const { isAuthenticated, loading } = useAuth();
@@ -20,6 +21,7 @@ const MainLayout = ({ children }) => {
     <div className="app-container">
       {isAuthenticated && <Header />}
       <main className="app-content" style={{ flex: 1, padding: isAuthenticated ? '24px' : '0' }}>
+  {isAuthenticated && <InstallPWA />}
         {children}
       </main>
       {isAuthenticated && <MobileNav />}
