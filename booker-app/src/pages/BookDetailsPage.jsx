@@ -48,6 +48,30 @@ const BookDetailsPage = () => {
   if (loading) return <div className="loading">Chargement du livre...</div>;
   if (!book) return <div className="error-message">Livre non trouvé</div>;
 
+  // Helpers
+  const isLegacy = !!book.year && !book.startedDate; // anciens livres sans dates
+  const formatDate = (d) => {
+    if (!d) return '';
+    try {
+      // Supporte 'YYYY-MM-DD' ou ISO
+      const parts = String(d).split('-');
+      const date = parts.length === 3 ? new Date(Number(parts[0]), Number(parts[1]) - 1, Number(parts[2])) : new Date(d);
+      return date.toLocaleDateString('fr-FR', { day: '2-digit', month: 'short', year: 'numeric' });
+    } catch {
+      return d;
+    }
+  };
+  const stars = (n = 0) => {
+    const v = Math.max(0, Math.min(5, Number(n) || 0));
+    return (
+      <span className="stars">
+        {'★'.repeat(v)}{'☆'.repeat(5 - v)}
+      </span>
+    );
+  };
+  const hasDetailed = ['characterRating','environmentRating','plotRating','plotTwistRating','originalityRating']
+    .some((k) => Number(book?.[k]) > 0);
+
   return (
     <div className="book-details-container">
       <header className="page-header">
@@ -67,15 +91,41 @@ const BookDetailsPage = () => {
         <div className="book-info-details">
           <h2>{book.title}</h2>
           <p className="author-name">{book.author}</p>
-          
+          {book.isFavorite && (
+            <div className="favorite-badge" title="Coup de cœur">❤️ Coup de cœur</div>
+          )}
+
           <div className="book-metadata">
-            <span className="genre-tag">{book.genre}</span>
-            <span className="year-tag">{book.year}</span>
-             <span className="pages-tag">{book.pages ? `${book.pages} pages` : '— pages'}</span>
+            {book.genre && <span className="genre-tag">{book.genre}</span>}
+            {!isLegacy ? (
+              <>
+                {book.startedDate && (
+                  <span className="date-tag">Début: {formatDate(book.startedDate)}</span>
+                )}
+                {book.finishedDate && (
+                  <span className="date-tag">Fin: {formatDate(book.finishedDate)}</span>
+                )}
+              </>
+            ) : (
+              <>
+                {book.year && <span className="year-tag">{book.year}</span>}
+                <span className="pages-tag">{book.pages ? `${book.pages} pages` : '— pages'}</span>
+              </>
+            )}
           </div>
 
-          <div className="rating-display">
-            {'★'.repeat(book.rating || 0)}{'☆'.repeat(5 - (book.rating || 0))}
+          {/* Ratings */}
+          <div className="ratings-grid-details">
+            <div className="rating-row"><span className="rating-label">Note générale</span>{stars(book.rating)}</div>
+            {(hasDetailed || !isLegacy) && (
+              <>
+                <div className="rating-row"><span className="rating-label">Personnages</span>{stars(book.characterRating)}</div>
+                <div className="rating-row"><span className="rating-label">Environnement</span>{stars(book.environmentRating)}</div>
+                <div className="rating-row"><span className="rating-label">Intrigue</span>{stars(book.plotRating)}</div>
+                <div className="rating-row"><span className="rating-label">Plot twist</span>{stars(book.plotTwistRating)}</div>
+                <div className="rating-row"><span className="rating-label">Originalité</span>{stars(book.originalityRating)}</div>
+              </>
+            )}
           </div>
 
             <div className="book-section">
