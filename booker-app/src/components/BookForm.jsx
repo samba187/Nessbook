@@ -5,8 +5,12 @@ const BookForm = ({ initialData = {}, onSubmit, submitLabel, disabled = false })
     title: initialData.title || '',
     author: initialData.author || '',
     genre: initialData.genre || '',
+    // Nouveaux champs (dates)
     startedDate: initialData.startedDate || '',
     finishedDate: initialData.finishedDate || '',
+    // Anciens champs (pour compatibilité)
+    year: initialData.year || '',
+    pages: initialData.pages || '',
     rating: initialData.rating || 0,
     characterRating: initialData.characterRating || 0,
     environmentRating: initialData.environmentRating || 0,
@@ -21,6 +25,9 @@ const BookForm = ({ initialData = {}, onSubmit, submitLabel, disabled = false })
     highlights: initialData.highlights || initialData.highlight || [],
     quotes: initialData.quotes || []
   });
+
+  // Détermine si c'est un ancien livre (a year/pages mais pas startedDate/finishedDate)
+  const isLegacyBook = initialData.year && !initialData.startedDate;
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -88,53 +95,89 @@ const BookForm = ({ initialData = {}, onSubmit, submitLabel, disabled = false })
           />
         </div>
 
-        <div className="form-group">
-          <label>Coup de cœur</label>
-          <button
-            type="button"
-            className={`btn ${formData.isFavorite ? 'btn-primary' : 'btn-secondary'}`}
-            onClick={() => !disabled && setFormData({ ...formData, isFavorite: !formData.isFavorite })}
-            disabled={disabled}
-            style={{ padding: '8px 16px' }}
-          >
-            {formData.isFavorite ? '❤️ Coup de cœur' : '🤍 Pas un coup de cœur'}
-          </button>
-        </div>
+        {!isLegacyBook && (
+          <div className="form-group">
+            <label>Coup de cœur</label>
+            <button
+              type="button"
+              className={`btn ${formData.isFavorite ? 'btn-primary' : 'btn-secondary'}`}
+              onClick={() => !disabled && setFormData({ ...formData, isFavorite: !formData.isFavorite })}
+              disabled={disabled}
+              style={{ padding: '8px 16px' }}
+            >
+              {formData.isFavorite ? '❤️ Coup de cœur' : '🤍 Pas un coup de cœur'}
+            </button>
+          </div>
+        )}
       </div>
 
       <div className="form-row">
-        <div className="form-group">
-          <label>Commencé le</label>
-          <input
-            type="date"
-            value={formData.startedDate}
-            onChange={(e) => setFormData({ ...formData, startedDate: e.target.value })}
-            className="form-input"
-            disabled={disabled}
-          />
-        </div>
+        {isLegacyBook ? (
+          <>
+            <div className="form-group">
+              <label>Année de publication</label>
+              <input
+                type="number"
+                value={formData.year}
+                onChange={(e) => setFormData({ ...formData, year: e.target.value })}
+                className="form-input"
+                placeholder="2023"
+                disabled={disabled}
+              />
+            </div>
 
-        <div className="form-group">
-          <label>Terminé le</label>
-          <input
-            type="date"
-            value={formData.finishedDate}
-            onChange={(e) => setFormData({ ...formData, finishedDate: e.target.value })}
-            className="form-input"
-            disabled={disabled}
-          />
-        </div>
+            <div className="form-group">
+              <label>Nombre de pages</label>
+              <input
+                type="number"
+                value={formData.pages}
+                onChange={(e) => setFormData({ ...formData, pages: e.target.value })}
+                className="form-input"
+                placeholder="350"
+                disabled={disabled}
+              />
+            </div>
+          </>
+        ) : (
+          <>
+            <div className="form-group">
+              <label>Commencé le</label>
+              <input
+                type="date"
+                value={formData.startedDate}
+                onChange={(e) => setFormData({ ...formData, startedDate: e.target.value })}
+                className="form-input"
+                disabled={disabled}
+              />
+            </div>
+
+            <div className="form-group">
+              <label>Terminé le</label>
+              <input
+                type="date"
+                value={formData.finishedDate}
+                onChange={(e) => setFormData({ ...formData, finishedDate: e.target.value })}
+                className="form-input"
+                disabled={disabled}
+              />
+            </div>
+          </>
+        )}
       </div>
 
       <div className="form-group">
         <label>Notes détaillées</label>
         <div className="ratings-grid">
           <RatingInput label="Note globale" field="rating" value={formData.rating} />
-          <RatingInput label="Personnages" field="characterRating" value={formData.characterRating} />
-          <RatingInput label="Environnement" field="environmentRating" value={formData.environmentRating} />
-          <RatingInput label="Intrigue" field="plotRating" value={formData.plotRating} />
-          <RatingInput label="Plot twist" field="plotTwistRating" value={formData.plotTwistRating} />
-          <RatingInput label="Originalité" field="originalityRating" value={formData.originalityRating} />
+          {!isLegacyBook && (
+            <>
+              <RatingInput label="Personnages" field="characterRating" value={formData.characterRating} />
+              <RatingInput label="Environnement" field="environmentRating" value={formData.environmentRating} />
+              <RatingInput label="Intrigue" field="plotRating" value={formData.plotRating} />
+              <RatingInput label="Plot twist" field="plotTwistRating" value={formData.plotTwistRating} />
+              <RatingInput label="Originalité" field="originalityRating" value={formData.originalityRating} />
+            </>
+          )}
         </div>
       </div>
 

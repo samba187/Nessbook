@@ -179,11 +179,17 @@ def add_book():
         'title': data.get('title', ''),
         'author': data.get('author', ''),
         'genre': data.get('genre', ''),
-        'year': data.get('year', None),
-        'pages': data.get('pages', None),
+        'startedDate': data.get('startedDate', ''),
+        'finishedDate': data.get('finishedDate', ''),
         'resume': data.get('resume', ''),
         'image': data.get('image', ''),
         'rating': data.get('rating', 0),
+        'characterRating': data.get('characterRating', 0),
+        'environmentRating': data.get('environmentRating', 0),
+        'plotRating': data.get('plotRating', 0),
+        'plotTwistRating': data.get('plotTwistRating', 0),
+        'originalityRating': data.get('originalityRating', 0),
+        'isFavorite': data.get('isFavorite', False),
         'comment': data.get('comment', ''),
         'quotes': data.get('quotes', []),
         'highlights': data.get('highlights', []),
@@ -209,12 +215,12 @@ def edit_book():
     book = books_collection.find_one({'_id': _id})
     if not book or book.get('user_email') != current_user:
         return jsonify({'error': 'Unauthorized'}), 403
+    
+    # Construction de l'objet livre mis à jour en préservant les anciens champs
     updated_book = {
         'title': data.get('title', ''),
         'author': data.get('author', ''),
         'genre': data.get('genre', ''),
-        'year': data.get('year', None),
-        'pages': data.get('pages', None),
         'resume': data.get('resume', ''),
         'image': data.get('image', ''),
         'rating': data.get('rating', 0),
@@ -223,6 +229,31 @@ def edit_book():
         'highlights': data.get('highlights', []),
         'updated_at': datetime.datetime.utcnow()
     }
+    
+    # Nouveaux champs (système de dates et ratings détaillés)
+    if 'startedDate' in data:
+        updated_book['startedDate'] = data.get('startedDate', '')
+    if 'finishedDate' in data:
+        updated_book['finishedDate'] = data.get('finishedDate', '')
+    if 'characterRating' in data:
+        updated_book['characterRating'] = data.get('characterRating', 0)
+    if 'environmentRating' in data:
+        updated_book['environmentRating'] = data.get('environmentRating', 0)
+    if 'plotRating' in data:
+        updated_book['plotRating'] = data.get('plotRating', 0)
+    if 'plotTwistRating' in data:
+        updated_book['plotTwistRating'] = data.get('plotTwistRating', 0)
+    if 'originalityRating' in data:
+        updated_book['originalityRating'] = data.get('originalityRating', 0)
+    if 'isFavorite' in data:
+        updated_book['isFavorite'] = data.get('isFavorite', False)
+    
+    # Anciens champs (pour compatibilité avec les livres existants)
+    if 'year' in data:
+        updated_book['year'] = data.get('year', None)
+    if 'pages' in data:
+        updated_book['pages'] = data.get('pages', None)
+    
     books_collection.update_one({'_id': _id}, {'$set': updated_book})
     return jsonify({'message': 'Book updated successfully!'})
 

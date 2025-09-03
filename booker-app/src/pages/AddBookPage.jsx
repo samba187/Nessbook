@@ -2,6 +2,34 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import api from '../services/api';
 import './AddBookPage.css';
+import '../styles/ratings.css';
+
+// Composant pour les ratings avec étoiles
+const RatingInput = ({ label, icon, value, onChange }) => {
+  return (
+    <div className="rating-input">
+      <label className="rating-label">
+        <span className="rating-icon">{icon}</span>
+        {label}
+      </label>
+      <div className="stars-container">
+        {[1, 2, 3, 4, 5].map(star => (
+          <button
+            key={star}
+            type="button"
+            className={`star ${star <= value ? 'active' : ''}`}
+            onClick={() => onChange(star)}
+          >
+            ⭐
+          </button>
+        ))}
+        <span className="rating-value">
+          {value > 0 ? `${value}/5` : '0/5'}
+        </span>
+      </div>
+    </div>
+  );
+};
 
 const AddBookPage = () => {
   const navigate = useNavigate();
@@ -13,15 +41,21 @@ const AddBookPage = () => {
     title: '',
     author: '',
     genre: '',
-    year: new Date().getFullYear(),
     image: '',
     imageFile: null,
     resume: '',
     comment: '',
     rating: 0,
-  highlights: [],
-  quotes: [],
-    pages: ''
+    characterRating: 0,
+    environmentRating: 0,
+    plotRating: 0,
+    plotTwistRating: 0,
+    originalityRating: 0,
+    isFavorite: false,
+    startedDate: '',
+    finishedDate: '',
+    highlights: [],
+    quotes: []
   });
 
   // Genres (liste courte demandée)
@@ -83,8 +117,12 @@ const AddBookPage = () => {
     }
   };
 
-  const handleRatingChange = (rating) => {
-    setFormData(prev => ({ ...prev, rating }));
+  const handleRatingChange = (field, rating) => {
+    setFormData(prev => ({ ...prev, [field]: rating }));
+  };
+
+  const handleFavoriteToggle = () => {
+    setFormData(prev => ({ ...prev, isFavorite: !prev.isFavorite }));
   };
 
   // Surlignages retirés de l'UI à la demande; on garde le champ pour compatibilité sans l'exposer
@@ -220,31 +258,28 @@ const AddBookPage = () => {
         <div className="form-group">
           <label className="form-label">
             <span className="label-icon">📅</span>
-            Année de publication
+            Commencé le
           </label>
           <input
-            type="number"
-            name="year"
-            value={formData.year}
+            type="date"
+            name="startedDate"
+            value={formData.startedDate}
             onChange={handleInputChange}
             className="form-input"
-            min="1000"
-            max={new Date().getFullYear() + 10}
           />
         </div>
 
         <div className="form-group">
           <label className="form-label">
-            <span className="label-icon">📄</span>
-            Nombre de pages
+            <span className="label-icon">✅</span>
+            Terminé le
           </label>
           <input
-            type="text"
-            name="pages"
-            value={formData.pages}
+            type="date"
+            name="finishedDate"
+            value={formData.finishedDate}
             onChange={handleInputChange}
             className="form-input"
-            placeholder="ex: 350"
           />
         </div>
       </div>
@@ -313,26 +348,60 @@ const AddBookPage = () => {
     <div className="form-step">
       <h3 className="step-title">⭐ Votre avis sur le livre</h3>
       
+      {/* Coup de cœur */}
       <div className="form-group">
         <label className="form-label">
-          <span className="label-icon">⭐</span>
-          Note sur 5
+          <span className="label-icon">❤️</span>
+          Coup de cœur
         </label>
-        <div className="rating-container">
-          {[1, 2, 3, 4, 5].map(star => (
-            <button
-              key={star}
-              type="button"
-              className={`star-btn ${star <= formData.rating ? 'active' : ''}`}
-              onClick={() => handleRatingChange(star)}
-            >
-              ⭐
-            </button>
-          ))}
-          <span className="rating-text">
-            {formData.rating > 0 ? `${formData.rating}/5` : 'Non noté'}
-          </span>
-        </div>
+        <button
+          type="button"
+          className={`favorite-btn ${formData.isFavorite ? 'active' : ''}`}
+          onClick={handleFavoriteToggle}
+        >
+          <span className="heart-icon">{formData.isFavorite ? '❤️' : '🤍'}</span>
+          {formData.isFavorite ? 'Coup de cœur !' : 'Ajouter aux coups de cœur'}
+        </button>
+      </div>
+
+      {/* Ratings */}
+      <div className="ratings-grid">
+        <RatingInput
+          label="Note générale"
+          icon="⭐"
+          value={formData.rating}
+          onChange={(rating) => handleRatingChange('rating', rating)}
+        />
+        <RatingInput
+          label="Personnages"
+          icon="👤"
+          value={formData.characterRating}
+          onChange={(rating) => handleRatingChange('characterRating', rating)}
+        />
+        <RatingInput
+          label="Environnement"
+          icon="🌍"
+          value={formData.environmentRating}
+          onChange={(rating) => handleRatingChange('environmentRating', rating)}
+        />
+        <RatingInput
+          label="Intrigue"
+          icon="📚"
+          value={formData.plotRating}
+          onChange={(rating) => handleRatingChange('plotRating', rating)}
+        />
+        <RatingInput
+          label="Plot twist"
+          icon="🔀"
+          value={formData.plotTwistRating}
+          onChange={(rating) => handleRatingChange('plotTwistRating', rating)}
+        />
+        <RatingInput
+          label="Originalité"
+          icon="💡"
+          value={formData.originalityRating}
+          onChange={(rating) => handleRatingChange('originalityRating', rating)}
+        />
       </div>
 
       <div className="form-group">

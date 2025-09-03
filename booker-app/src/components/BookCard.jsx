@@ -103,10 +103,16 @@ const BookCard = ({ book, onClick, onEdit, onDelete, onView }) => {
             </div>
           )}
           
-          {(book.startedDate || book.finishedDate) && (
+          {/* Affichage des dates (nouveau système) ou année/pages (ancien système) */}
+          {(book.startedDate || book.finishedDate) ? (
             <div className="book-dates">
               {book.startedDate && <div>📖 {new Date(book.startedDate).toLocaleDateString('fr-FR')}</div>}
               {book.finishedDate && <div>✅ {new Date(book.finishedDate).toLocaleDateString('fr-FR')}</div>}
+            </div>
+          ) : (
+            <div className="book-legacy-info">
+              {book.year && <div>📅 {book.year}</div>}
+              {book.pages && <div>📄 {book.pages} pages</div>}
             </div>
           )}
         </div>
