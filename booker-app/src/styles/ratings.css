@@ -1,0 +1,56 @@
+/* Ratings Grid for detailed ratings */
+.ratings-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 16px;
+  margin-top: 8px;
+}
+
+.ratings-grid .form-group {
+  margin-bottom: 0;
+}
+
+.ratings-grid .form-group label {
+  font-size: 14px;
+  font-weight: 500;
+  margin-bottom: 4px;
+}
+
+.rating-input {
+  display: flex;
+  gap: 4px;
+}
+
+.star {
+  font-size: 20px;
+  color: #ddd;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+
+.star.filled {
+  color: #ffc107;
+}
+
+.star:hover {
+  color: #ffb300;
+}
+
+/* Favorite button styling */
+.btn.btn-primary[style*="padding: 8px 16px"] {
+  background-color: #e91e63;
+  border-color: #e91e63;
+}
+
+.btn.btn-primary[style*="padding: 8px 16px"]:hover {
+  background-color: #c2185b;
+  border-color: #c2185b;
+}
+
+/* Mobile responsive for ratings */
+@media (max-width: 768px) {
+  .ratings-grid {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+}

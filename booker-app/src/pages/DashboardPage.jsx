@@ -82,9 +82,12 @@ const DashboardPage = () => {
           return a.title.localeCompare(b.title);
         case 'author':
           return a.author.localeCompare(b.author);
-        case 'year':
-          return (b.year || 0) - (a.year || 0);
         case 'rating':
+          return (b.rating || 0) - (a.rating || 0);
+        case 'favorites':
+          // Favorites first, then by rating
+          if (a.isFavorite && !b.isFavorite) return -1;
+          if (!a.isFavorite && b.isFavorite) return 1;
           return (b.rating || 0) - (a.rating || 0);
         default:
           return 0;
@@ -98,11 +101,7 @@ const DashboardPage = () => {
     avgRating: books.length > 0 
       ? (books.reduce((sum, book) => sum + (book.rating || 0), 0) / books.length).toFixed(1)
       : 0,
-    recentBooks: books.filter(book => {
-      const bookYear = book.year || 0;
-      const currentYear = new Date().getFullYear();
-      return bookYear >= currentYear - 1;
-    }).length
+    favorites: books.filter(book => book.isFavorite).length
   };
 
   const getWelcomeMessage = () => {
@@ -140,8 +139,8 @@ const DashboardPage = () => {
             <span className="quick-stat-label">Livres</span>
           </div>
           <div className="quick-stat-item">
-            <span className="quick-stat-value">{stats.genres}</span>
-            <span className="quick-stat-label">Genres</span>
+            <span className="quick-stat-value">{stats.favorites}</span>
+            <span className="quick-stat-label">❤️ Favoris</span>
           </div>
           <div className="quick-stat-item">
             <span className="quick-stat-value">⭐ {stats.avgRating}</span>
@@ -193,8 +192,8 @@ const DashboardPage = () => {
           >
             <option value="title">Trier par titre</option>
             <option value="author">Trier par auteur</option>
-            <option value="year">Trier par année</option>
             <option value="rating">Trier par note</option>
+            <option value="favorites">Coups de cœur d'abord</option>
           </select>
         </div>
       </div>

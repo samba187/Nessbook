@@ -8,18 +8,23 @@
   right: 0;
   background: white;
   border-top: 1px solid var(--border-color);
+  box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+  z-index: 1000;
+  height: 70px;
+}
+
+.mobile-nav-container {
   display: flex;
   justify-content: space-around;
   padding: 8px 0;
-  box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
-  z-index: 100;
+  height: 100%;
 }
 
-.nav-item {
+.mobile-nav-item {
   flex: 1;
   background: none;
   border: none;
-  padding: 10px;
+  padding: 8px;
   cursor: pointer;
   display: flex;
   flex-direction: column;
@@ -30,36 +35,38 @@
   position: relative;
 }
 
-.nav-item::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 0;
-  height: 3px;
-  background-color: var(--primary-color);
-  transition: width 0.3s;
-}
-
-.nav-item.active {
+.mobile-nav-item.active {
   color: var(--primary-color);
 }
 
-.nav-item.active::before {
-  width: 30px;
+.nav-icon-container {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-.nav-item:active {
+.active-indicator {
+  position: absolute;
+  top: -10px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 20px;
+  height: 3px;
+  background-color: var(--primary-color);
+  border-radius: 2px;
+}
+
+.mobile-nav-item:active {
   transform: scale(0.95);
 }
 
 .nav-icon {
-  font-size: 24px;
+  font-size: 22px;
 }
 
 .nav-label {
-  font-size: 12px;
+  font-size: 11px;
   font-weight: 500;
 }
 
@@ -155,7 +162,7 @@
   width: 60%;
 }
 
-/* Floating Action Button (si nécessaire) */
+/* Floating Action Button et Install PWA */
 .fab {
   position: fixed;
   bottom: 90px;
@@ -183,6 +190,32 @@
 
 .fab:active {
   transform: scale(0.95);
+}
+
+/* Install PWA Button */
+.install-pwa-button {
+  position: fixed !important;
+  bottom: 90px !important;
+  right: 20px !important;
+  z-index: 1001 !important;
+}
+
+/* Mobile adjustments */
+@media (max-width: 768px) {
+  .install-pwa-button {
+    bottom: 85px !important;
+    right: 15px !important;
+  }
+  
+  .install-pwa-button button {
+    font-size: 13px !important;
+    padding: 10px 16px !important;
+  }
+  
+  /* Add bottom padding to content to avoid overlap with mobile nav */
+  .app-content {
+    padding-bottom: 90px !important;
+  }
 }
 
 /* Transitions globales */

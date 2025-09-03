@@ -5,9 +5,15 @@ const BookForm = ({ initialData = {}, onSubmit, submitLabel, disabled = false })
     title: initialData.title || '',
     author: initialData.author || '',
     genre: initialData.genre || '',
-    year: initialData.year || new Date().getFullYear(),
-  pages: initialData.pages || '',
+    startedDate: initialData.startedDate || '',
+    finishedDate: initialData.finishedDate || '',
     rating: initialData.rating || 0,
+    characterRating: initialData.characterRating || 0,
+    environmentRating: initialData.environmentRating || 0,
+    plotRating: initialData.plotRating || 0,
+    plotTwistRating: initialData.plotTwistRating || 0,
+    originalityRating: initialData.originalityRating || 0,
+    isFavorite: initialData.isFavorite || false,
     resume: initialData.resume || '',
     comment: initialData.comment || '',
     image: initialData.image || '',
@@ -21,9 +27,27 @@ const BookForm = ({ initialData = {}, onSubmit, submitLabel, disabled = false })
     onSubmit(formData);
   };
 
-  const handleRatingClick = (rating) => {
-    setFormData({ ...formData, rating });
+  const handleRatingClick = (field, rating) => {
+    setFormData({ ...formData, [field]: rating });
   };
+
+  const RatingInput = ({ label, field, value }) => (
+    <div className="form-group">
+      <label>{label}</label>
+      <div className="rating-input">
+        {[1, 2, 3, 4, 5].map((star) => (
+          <span
+            key={star}
+            className={`star ${value >= star ? 'filled' : ''}`}
+            onClick={() => !disabled && handleRatingClick(field, star)}
+            style={{ cursor: disabled ? 'default' : 'pointer' }}
+          >
+            ★
+          </span>
+        ))}
+      </div>
+    </div>
+  );
 
   return (
   <form onSubmit={handleSubmit} className="book-form">
@@ -65,46 +89,52 @@ const BookForm = ({ initialData = {}, onSubmit, submitLabel, disabled = false })
         </div>
 
         <div className="form-group">
-          <label>Année</label>
-          <input
-            type="number"
-            value={formData.year}
-            onChange={(e) => setFormData({ ...formData, year: parseInt(e.target.value) })}
-            className="form-input"
-            min="1000"
-            max={new Date().getFullYear()}
+          <label>Coup de cœur</label>
+          <button
+            type="button"
+            className={`btn ${formData.isFavorite ? 'btn-primary' : 'btn-secondary'}`}
+            onClick={() => !disabled && setFormData({ ...formData, isFavorite: !formData.isFavorite })}
             disabled={disabled}
-          />
+            style={{ padding: '8px 16px' }}
+          >
+            {formData.isFavorite ? '❤️ Coup de cœur' : '🤍 Pas un coup de cœur'}
+          </button>
         </div>
       </div>
 
       <div className="form-row">
         <div className="form-group">
-          <label>Pages</label>
+          <label>Commencé le</label>
           <input
-            type="text"
-            value={formData.pages}
-            onChange={(e) => setFormData({ ...formData, pages: e.target.value })}
+            type="date"
+            value={formData.startedDate}
+            onChange={(e) => setFormData({ ...formData, startedDate: e.target.value })}
             className="form-input"
-            placeholder="ex: 350"
+            disabled={disabled}
+          />
+        </div>
+
+        <div className="form-group">
+          <label>Terminé le</label>
+          <input
+            type="date"
+            value={formData.finishedDate}
+            onChange={(e) => setFormData({ ...formData, finishedDate: e.target.value })}
+            className="form-input"
             disabled={disabled}
           />
         </div>
       </div>
 
-  <div className="form-group">
-        <label>Note</label>
-        <div className="rating-input">
-          {[1, 2, 3, 4, 5].map((star) => (
-            <span
-              key={star}
-              className={`star ${formData.rating >= star ? 'filled' : ''}`}
-              onClick={() => !disabled && handleRatingClick(star)}
-              style={{ cursor: disabled ? 'default' : 'pointer' }}
-            >
-              ★
-            </span>
-          ))}
+      <div className="form-group">
+        <label>Notes détaillées</label>
+        <div className="ratings-grid">
+          <RatingInput label="Note globale" field="rating" value={formData.rating} />
+          <RatingInput label="Personnages" field="characterRating" value={formData.characterRating} />
+          <RatingInput label="Environnement" field="environmentRating" value={formData.environmentRating} />
+          <RatingInput label="Intrigue" field="plotRating" value={formData.plotRating} />
+          <RatingInput label="Plot twist" field="plotTwistRating" value={formData.plotTwistRating} />
+          <RatingInput label="Originalité" field="originalityRating" value={formData.originalityRating} />
         </div>
       </div>
 

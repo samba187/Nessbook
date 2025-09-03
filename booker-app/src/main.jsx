@@ -5,6 +5,7 @@ import App from './App.jsx';
 // src/main.jsx
 import './App.css';
 import './styles/pwa.css';
+import './styles/ratings.css';
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>

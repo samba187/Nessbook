@@ -32,6 +32,9 @@ const BookCard = ({ book, onClick, onEdit, onDelete, onView }) => {
     <div className="book-card" onClick={() => onClick && onClick(book)}>
       <div className="book-card-header">
         <div className="book-cover-container">
+          {book.isFavorite && (
+            <div className="favorite-badge">❤️</div>
+          )}
           <img 
             src={book.image || getPlaceholderImage(book.title)} 
             alt={book.title} 
@@ -85,36 +88,39 @@ const BookCard = ({ book, onClick, onEdit, onDelete, onView }) => {
       <div className="book-card-content">
         <div className="book-main-info">
           <h3 className="book-title" title={book.title}>
-            {truncateText(book.title, 50)}
+            {truncateText(book.title, 40)}
           </h3>
           <p className="book-author" title={book.author}>
-            {truncateText(book.author, 30)}
+            {truncateText(book.author, 25)}
           </p>
         </div>
 
         <div className="book-metadata">
-          <div className="book-genre-tag">
-            <span className="genre-icon">📖</span>
-            {book.genre}
-          </div>
+          {book.genre && (
+            <div className="book-genre-tag">
+              <span className="genre-icon">📖</span>
+              {book.genre}
+            </div>
+          )}
           
-          {book.year && (
-            <div className="book-year">
-              📅 {book.year}
+          {(book.startedDate || book.finishedDate) && (
+            <div className="book-dates">
+              {book.startedDate && <div>📖 {new Date(book.startedDate).toLocaleDateString('fr-FR')}</div>}
+              {book.finishedDate && <div>✅ {new Date(book.finishedDate).toLocaleDateString('fr-FR')}</div>}
             </div>
           )}
         </div>
 
         {book.resume && (
           <div className="book-description">
-            <p>{truncateText(book.resume, 100)}</p>
+            <p>{truncateText(book.resume, 80)}</p>
           </div>
         )}
 
         {book.comment && (
           <div className="book-comment">
             <span className="comment-icon">💭</span>
-            <p>{truncateText(book.comment, 80)}</p>
+            <p>{truncateText(book.comment, 60)}</p>
           </div>
         )}
       </div>
