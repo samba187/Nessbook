@@ -11,7 +11,8 @@ const DashboardPage = () => {
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
   const [filterGenre, setFilterGenre] = useState('');
-  const [sortBy, setSortBy] = useState('title');
+  // 'custom' preserves the current order (including drag-and-drop)
+  const [sortBy, setSortBy] = useState('custom');
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -65,18 +66,20 @@ const DashboardPage = () => {
   const genres = [...new Set(books.map(book => book.genre))].filter(Boolean);
 
   // Filter and sort books
-  const filteredBooks = books
-    .filter(book => {
+  // Filter first, then optionally sort (keep 'custom' order intact)
+  let filteredBooks = books.filter(book => {
       const matchesSearch = 
         book.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
         book.author.toLowerCase().includes(searchTerm.toLowerCase()) ||
         book.genre.toLowerCase().includes(searchTerm.toLowerCase());
-      
+
       const matchesGenre = !filterGenre || book.genre === filterGenre;
-      
+
       return matchesSearch && matchesGenre;
-    })
-    .sort((a, b) => {
+    });
+
+  if (sortBy !== 'custom') {
+    filteredBooks = [...filteredBooks].sort((a, b) => {
       switch (sortBy) {
         case 'title':
           return a.title.localeCompare(b.title);
@@ -93,6 +96,7 @@ const DashboardPage = () => {
           return 0;
       }
     });
+  }
 
   // Calculate stats
   const stats = {
@@ -190,6 +194,7 @@ const DashboardPage = () => {
             onChange={(e) => setSortBy(e.target.value)}
             className="filter-select"
           >
+            <option value="custom">Ordre personnalisé</option>
             <option value="title">Trier par titre</option>
             <option value="author">Trier par auteur</option>
             <option value="rating">Trier par note</option>

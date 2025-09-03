@@ -1,33 +1,36 @@
 import React, { useState } from 'react';
+import '../styles/ratings.css';
 
 const BookForm = ({ initialData = {}, onSubmit, submitLabel, disabled = false }) => {
+  // Defensive clone so we can mutate safely
+  const safeInitial = initialData || {};
   const [formData, setFormData] = useState({
-    title: initialData.title || '',
-    author: initialData.author || '',
-    genre: initialData.genre || '',
+    title: safeInitial.title || '',
+    author: safeInitial.author || '',
+    genre: safeInitial.genre || '',
     // Nouveaux champs (dates)
-    startedDate: initialData.startedDate || '',
-    finishedDate: initialData.finishedDate || '',
+  startedDate: safeInitial.startedDate || '',
+  finishedDate: safeInitial.finishedDate || '',
     // Anciens champs (pour compatibilité)
-    year: initialData.year || '',
-    pages: initialData.pages || '',
-    rating: initialData.rating || 0,
-    characterRating: initialData.characterRating || 0,
-    environmentRating: initialData.environmentRating || 0,
-    plotRating: initialData.plotRating || 0,
-    plotTwistRating: initialData.plotTwistRating || 0,
-    originalityRating: initialData.originalityRating || 0,
-    isFavorite: initialData.isFavorite || false,
-    resume: initialData.resume || '',
-    comment: initialData.comment || '',
-    image: initialData.image || '',
+  year: safeInitial.year || '',
+  pages: safeInitial.pages || '',
+  rating: safeInitial.rating || 0,
+  characterRating: safeInitial.characterRating || 0,
+  environmentRating: safeInitial.environmentRating || 0,
+  plotRating: safeInitial.plotRating || 0,
+  plotTwistRating: safeInitial.plotTwistRating || 0,
+  originalityRating: safeInitial.originalityRating || 0,
+  isFavorite: safeInitial.isFavorite || false,
+  resume: safeInitial.resume || '',
+  comment: safeInitial.comment || '',
+  image: safeInitial.image || '',
     // Normalize legacy 'highlight' to 'highlights'
-    highlights: initialData.highlights || initialData.highlight || [],
-    quotes: initialData.quotes || []
+  highlights: safeInitial.highlights || safeInitial.highlight || [],
+  quotes: safeInitial.quotes || []
   });
 
   // Détermine si c'est un ancien livre (a year/pages mais pas startedDate/finishedDate)
-  const isLegacyBook = initialData.year && !initialData.startedDate;
+  const isLegacyBook = !!safeInitial.year && !safeInitial.startedDate;
 
   const handleSubmit = (e) => {
     e.preventDefault();
