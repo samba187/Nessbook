@@ -1,0 +1,32 @@
+<svg width="180" height="180" viewBox="0 0 180 180" xmlns="http://www.w3.org/2000/svg">
+  <rect width="180" height="180" rx="40" fill="url(#gradient)"/>
+  <g transform="translate(90, 90)">
+    <rect x="-28" y="-36" width="42" height="56" rx="3" fill="#ffffff" stroke="#ffffff" stroke-width="1"/>
+    <rect x="-24" y="-32" width="34" height="48" rx="2" fill="#f8f9fa"/>
+    <rect x="-28" y="-36" width="7" height="56" rx="3" fill="rgba(255,255,255,0.9)"/>
+    <g transform="translate(14, -28) scale(0.35)">
+      <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" fill="#ffffff"/>
+    </g>
+    <rect x="-20" y="-26" width="20" height="1" rx="0.5" fill="rgba(255,255,255,0.7)"/>
+    <rect x="-20" y="-20" width="28" height="1" rx="0.5" fill="rgba(255,255,255,0.7)"/>
+    <rect x="-20" y="-14" width="16" height="1" rx="0.5" fill="rgba(255,255,255,0.7)"/>
+    <rect x="-20" y="-8" width="24" height="1" rx="0.5" fill="rgba(255,255,255,0.7)"/>
+    <g transform="translate(-20, 2) scale(0.25)">
+      <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" fill="#ffffff"/>
+    </g>
+    <g transform="translate(-8, 2) scale(0.25)">
+      <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" fill="#ffffff"/>
+    </g>
+    <g transform="translate(4, 2) scale(0.25)">
+      <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" fill="#ffffff"/>
+    </g>
+  </g>
+  <text x="90" y="145" font-family="Arial, sans-serif" font-size="42" font-weight="bold" text-anchor="middle" fill="#ffffff">N</text>
+  <defs>
+    <linearGradient id="gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#e91e63;stop-opacity:1" />
+      <stop offset="50%" style="stop-color:#c2185b;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#ad1457;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+</svg>

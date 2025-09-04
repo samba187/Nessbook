@@ -1,0 +1,21 @@
+{
+  "version": 2,
+  "builds": [
+    {
+      "src": "booker-app/package.json",
+      "use": "@vercel/static-build",
+      "config": {
+        "distDir": "booker-app/dist"
+      }
+    }
+  ],
+  "routes": [
+    {
+      "handle": "filesystem"
+    },
+    {
+      "src": "/.*",
+      "dest": "/booker-app/dist/index.html"
+    }
+  ]
+}

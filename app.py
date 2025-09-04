@@ -1,7 +1,7 @@
 import os
 import datetime
 from dotenv import load_dotenv
-from flask import Flask, jsonify, request, send_from_directory
+from flask import Flask, jsonify, request
 from flask_cors import CORS
 from pymongo import MongoClient
 from bson.objectid import ObjectId
@@ -13,13 +13,13 @@ from flask_jwt_extended import (
 # Charge .env en local (sur Heroku on utilisera Config Vars)
 load_dotenv()
 
-# --- Flask + dossier statique (front Vite) ---
-app = Flask(
-    __name__,
-    static_folder="booker-app/dist",   # sera créé par "npm run build"
-    static_url_path="/"
-)
-CORS(app)
+"""
+Backend API-only (Heroku). Frontend will be deployed separately to Vercel.
+"""
+app = Flask(__name__)
+# Allow cross-origin for Vercel frontend; by default allow all. You can restrict with CORS_ORIGINS env.
+allowed_origins = os.environ.get("CORS_ORIGINS", "*")
+CORS(app, resources={r"/*": {"origins": allowed_origins}})
 
 # --- Config JWT ---
 app.config["JWT_SECRET_KEY"] = os.environ.get("JWT_SECRET_KEY", "change-me")
@@ -45,25 +45,10 @@ try:
 except Exception:
     pass
 
-# ------------------ ROUTES FRONT ------------------
+# ------------------ ROOT (API status) ------------------
 @app.get("/")
 def home():
-    # Sert index.html du front si présent, sinon renvoie un "ok"
-    index_path = os.path.join(app.static_folder, "index.html")
-    if os.path.exists(index_path):
-        return send_from_directory(app.static_folder, "index.html")
-    return jsonify({"status": "ok", "app": "Nessbook", "hint": "Front non buildé (booker-app/dist manquant)"})
-
-# fallback SPA (chemins React)
-@app.route("/<path:path>")
-def spa_fallback(path):
-    file_path = os.path.join(app.static_folder, path)
-    if os.path.isfile(file_path):
-        return send_from_directory(app.static_folder, path)
-    index_path = os.path.join(app.static_folder, "index.html")
-    if os.path.exists(index_path):
-        return send_from_directory(app.static_folder, "index.html")
-    return jsonify({"error": "Not found"}), 404
+    return jsonify({"status": "ok", "app": "Nessbook API", "docs": "/api/health"})
 
 # ------------------ ROUTES API ------------------
 @app.route('/api/health')
