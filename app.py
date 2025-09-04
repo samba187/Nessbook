@@ -18,8 +18,37 @@ Backend API-only (Heroku). Frontend will be deployed separately to Vercel.
 """
 app = Flask(__name__)
 # Allow cross-origin for Vercel frontend; by default allow all. You can restrict with CORS_ORIGINS env.
+# Example value for CORS_ORIGINS: "https://nessbook.vercel.app"
 allowed_origins = os.environ.get("CORS_ORIGINS", "*")
-CORS(app, resources={r"/*": {"origins": allowed_origins}})
+
+# Be explicit about the CORS resources and methods/headers to make OPTIONS preflight succeed on Heroku
+CORS(
+    app,
+    resources={r"/api/*": {"origins": allowed_origins}, r"/": {"origins": allowed_origins}},
+    supports_credentials=False,
+    methods=["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    allow_headers=["Content-Type", "Authorization"],
+    expose_headers=["Content-Type", "Authorization"],
+)
+
+# Ensure CORS headers are always added (including for automatic OPTIONS) and handle multi-origin lists
+@app.after_request
+def add_cors_headers(response):
+    try:
+        origin = request.headers.get("Origin")
+        if allowed_origins == "*":
+            response.headers["Access-Control-Allow-Origin"] = "*"
+        else:
+            allowed = [o.strip() for o in allowed_origins.split(",") if o.strip()]
+            if origin and origin in allowed:
+                response.headers["Access-Control-Allow-Origin"] = origin
+                # Vary to ensure caches respect per-origin response
+                response.headers["Vary"] = ", ".join(filter(None, [response.headers.get("Vary"), "Origin"]))
+        response.headers["Access-Control-Allow-Headers"] = "Content-Type, Authorization"
+        response.headers["Access-Control-Allow-Methods"] = "GET, POST, PUT, DELETE, OPTIONS"
+    except Exception:
+        pass
+    return response
 
 # --- Config JWT ---
 app.config["JWT_SECRET_KEY"] = os.environ.get("JWT_SECRET_KEY", "change-me")
