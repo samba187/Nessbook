@@ -3,6 +3,9 @@
   "outputDirectory": "dist",
   "installCommand": "npm ci || npm i",
   "framework": null,
+  "env": {
+    "VITE_API_URL": "https://nessbook-ec6ae08c0bcf.herokuapp.com"
+  },
   "routes": [
     { "handle": "filesystem" },
     { "src": "/.*", "dest": "/index.html" }
